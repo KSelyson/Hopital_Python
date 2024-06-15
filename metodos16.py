@@ -11,73 +11,74 @@ def add_paciente():
     telefone = input("Digite o telefone do paciente:")
     
     if not CPF or not nome or not idade or not endereco or not telefone:
-        print("Por favor, preencha todos os campos")
-        return
-    print(adicionar_paciente(CPF, nome, idade, endereco, telefone, pacientes))
-
+        return "Por favor, preencha todos os campos"
+    
+    sql = "INSERT INTO TABLE PACIENTE(CPF, nome, idade, endereco, telefone) VALUES (%s, %s, %s, %s, %s )" 
+    dados = (CPF, nome, idade, endereco, telefone)
+    
+    return insert_naTabela(con, sql, dados)
+    
 def add_medico(): 
    
     nome          = input("Digite o nome do médico:")
     especialidade = input("Digite a especialidade do médico:")
-    CRM           = input("Digite o CRM do médico:")
+    CRM        = input("Digite o CRM do médico:")
     telefone      = input("Digite o telefone do médico:")    
     if not nome or not especialidade or not CRM or not telefone:
-        print("Por favor, preencha todos os campos")
-        return
-    print(adicionar_medico(nome, especialidade, CRM, telefone, medicos)) 
-
-def adicionar_paciente(CPF, nome, idade, endereco, telefone, pacientes):
+        return "Por favor, preencha todos os campos"
     
-    for paciente in pacientes:
-        if paciente["CPF"] == CPF:
-            return "Este CPF ja está cadastrado."
-    paciente = {"CPF": CPF, "Nome": nome, "Idade": idade, "Endereço": endereco, "Telefone": telefone}
-    pacientes.append(paciente)
-    return "Novo paciente cadastrado com sucesso!"
-
-def adicionar_medico(nome, especialidade, CRM, telefone, medicos):
+    sql = "INSERT INTO TABLE PACIENTE(CRM, nome, especialidade, telefone) VALUES (%s, %s, %s, %s )"
+    dados = (CRM, nome, especialidade, telefone)
+    
+    return insert_naTabela(con, sql, dados)
+    
+def pesquisar_paciente():
+    pesquisaCPF = input ("Digite o CPF do paciente que deseja consultar:")
+    
+    if not pesquisaCPF:
+        return "Digite um CPF valido."
+    
+    else:
+        sql = "SELECT * FROM PACIENTE WHERE CPF = %s"
+        return listar_umDeTabela (con, sql, pesquisaCPF)
+    
+    
    
-    for medico in medicos:
-       
-        if medico["CRM"] == CRM:
-            return "Este CRM ja está cadastrado."
-   
-    medico = {"Nome":nome, "Especialidade": especialidade, "CRM": CRM, "Telefone": telefone}
-    medicos.append(medico)
-    return "Novo médico cadastrado com sucesso!"
+  
 
-def pesquisar_paciente(CPF, pacientes):
-   
-    for paciente in pacientes:
-        if paciente["CPF"] == CPF:
-            return paciente
-    return "Paciente não encontrado!"
-
-def pesquisar_medico(CRM, medicos):
+def pesquisar_medico():
+    pesquisaCRM = input ("Digite o CRM do medico que deseja consultar:")
     
-    for medico in medicos:
-        if medico["CRM"] == CRM:
-            return medico
-    return "Médico não encontrado!"
-
-def excluir_paciente(CPF, pacientes):
+    if not pesquisaCRM:
+        return "Digite um CRM valido."
     
-    for paciente in pacientes:
-        if paciente["CPF"] == CPF:
-            pacientes.remove(paciente)
-            return "Paciente removido com sucesso!"
-    return "Paciente não encontrado!"
-
-def excluir_medico(CRM, medicos):
+    else: 
+        sql = "SELECT * FROM MEDICO WHERE CRM = %s"
+        return listar_umDeTabela (con, sql, pesquisaCRM)
     
-    for medico in medicos:
-        if medico["CRM"] == CRM:
-            medicos.remove(medico)
-            return "Medico removido com sucesso!"
-    return "Médico não encontrado!"
 
-pacientes = []
-medicos = []
+
+def excluir_paciente():
+    excluirCPF = input("Digite o CPF que deseja excluir:")
+    
+    if not excluirCPF:
+        return "Digite um CPF valido."
+    
+    else: 
+        sql = "SELECT * FROM PACIENTE WHERE CPF = %s"
+        return excluir_dadosTabela (con, sql, excluirCPF)
+
+def excluir_medico():
+    excluirCRM = input("Digite o CRM que deseja excluir:")
+    
+    if not excluirCRM:
+        return "Digite um CRM valido."
+    
+    else:
+        sql = "SELECT * FROM MEDICO WHERE CRM = %s"
+        return excluir_dadosTabela (con, sql, excluirCRM)
+
+
     
 finalizar_conexao(con)
 
