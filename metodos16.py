@@ -1,6 +1,6 @@
 from bancodados_hospital import *
 
-con = criar_conexao('localhost', 'root', 'root')
+con = criar_conexao('localhost', 'root', 'admin', 'hospital')
 
 def add_paciente():
    
@@ -13,7 +13,7 @@ def add_paciente():
     if not CPF or not nome or not idade or not endereco or not telefone:
         return "Por favor, preencha todos os campos"
     
-    sql = "INSERT INTO TABLE PACIENTE(CPF, nome, idade, endereco, telefone) VALUES (%s, %s, %s, %s, %s )" 
+    sql = "INSERT INTO PACIENTE(CPF, nome, idade, endereco, telefone) VALUES (%s, %s, %s, %s, %s )" 
     dados = (CPF, nome, idade, endereco, telefone)
     
     return insert_naTabela(con, sql, dados)
@@ -27,7 +27,7 @@ def add_medico():
     if not nome or not especialidade or not CRM or not telefone:
         return "Por favor, preencha todos os campos"
     
-    sql = "INSERT INTO TABLE PACIENTE(CRM, nome, especialidade, telefone) VALUES (%s, %s, %s, %s )"
+    sql = "INSERT INTO MEDICO(CRM, nome, especialidade, telefone) VALUES (%s, %s, %s, %s )"
     dados = (CRM, nome, especialidade, telefone)
     
     return insert_naTabela(con, sql, dados)
@@ -59,7 +59,7 @@ def excluir_paciente():
         return "Preencha o campo corretamente"
     
     else: 
-        sql = "SELECT * FROM PACIENTE WHERE CPF = %s"
+        sql = "DELETE FROM PACIENTE WHERE CPF = %s"
         return excluir_dadosTabela (con, sql, excluirCPF)
 
 def excluir_medico():
@@ -69,13 +69,13 @@ def excluir_medico():
         return "Preencha o campo corretamente"
     
     else:
-        sql = "SELECT * FROM MEDICO WHERE CRM = %s"
+        sql = "DELETE FROM MEDICO WHERE CRM = %s"
         return excluir_dadosTabela (con, sql, excluirCRM)
 
 def adicionar_consulta():
-    pesquisarCPF = input ("Digite o CPF do paciente para agendar a consulta: ")
-    horario      = input ("Digite o horario da consulta")
-    tipoConsulta = input ("Digite o tipo de consulta que será feita")
+    pesquisarCPF = input ("Digite o CPF do paciente para agendar a consulta:")
+    horario      = input ("Digite o horario da consulta:")
+    tipoConsulta = input ("Digite o tipo de consulta que será feita:")
     pesquisarCRM = input ("Digite o CRM do medico que deseja ser atendido: ")
     
     if not pesquisarCPF or not horario or not tipoConsulta or not pesquisarCRM:
@@ -102,7 +102,7 @@ def cancelar_consulta():
     if not pesquisarId:
         return "Preencha o campo corretamente"
     
-    sql = "SELECT * FROM CONSULTA WHERE ID = %s"
+    sql = "DELETE FROM CONSULTA WHERE ID = %s"
     
     return excluir_dadosTabela(con, sql, pesquisarId)
 
@@ -114,8 +114,8 @@ def adicionar_procedimento():
     if not pesquisarCRM or not pesquisarCPF or not procedimentoMedico:
         return "Preencha o campo corretamente"
     
-    sql = "INSERT INTO PROCEDIMENTO (CRM, PROCEDIMENTO_MEDICO) VALUES (%s, %s)"
-    dados = (pesquisarCRM, procedimentoMedico, pesquisarCPF)
+    sql = "INSERT INTO PROCEDIMENTO (CRM, CPF, PROCEDIMENTO_MEDICO) VALUES (%s, %s, %s)"
+    dados = (pesquisarCRM, pesquisarCPF, procedimentoMedico)
     
     return insert_naTabela(con, sql, dados)
 
@@ -128,6 +128,16 @@ def visualizar_procedimento():
     sql = "SELECT * FROM PROCEDIMENTO WHERE ID = %s"
     
     return listar_umDeTabela(con, sql, pesquisarId)
+
+def cancelar_procedimento():
+    pesquisarId = input ("Digite o ID do procedimento que será cancelado: ")
+    
+    if not pesquisarId:
+        return "Preencha o campo corretamente"
+    
+    sql = "DELETE FROM PROCEDIMENTO WHERE ID = %s"
+    
+    return excluir_dadosTabela(con, sql, pesquisarId)
 
 def reload():
     sqlPaciente = """
@@ -142,7 +152,7 @@ def reload():
 
     sqlMedico = """
     CREATE TABLE IF NOT EXISTS MEDICO (
-    CRM varchar(4) primary key,
+    CRM varchar(5) primary key,
     nome varchar(80),
     especialidade varchar(50),
     telefone int 
@@ -153,11 +163,11 @@ def reload():
     CREATE TABLE IF NOT EXISTS CONSULTA(
     id int auto_increment primary key,
     CPF varchar(14),
-    CRM varchar(4),
+    CRM varchar(5),
     horario varchar(5),
     tipo_consulta varchar(80),
-    FOREIGN KEY CPF REFERENCES PACIENTE(CPF),
-    FOREIGN KEY CRM REFERENCES MEDICO(CRM)
+    FOREIGN KEY (CPF) REFERENCES PACIENTE(CPF),
+    FOREIGN KEY (CRM) REFERENCES MEDICO(CRM)
     )"""
     print(criar_tabela(con, sqlConsulta, "hospital"))
 
@@ -165,13 +175,14 @@ def reload():
     CREATE TABLE IF NOT EXISTS PROCEDIMENTO (
     ID int auto_increment primary key,
     CPF varchar(14),
-    CRM varchar(4),
+    CRM varchar(5),
     PROCEDIMENTO_MEDICO varchar(80),
-    FOREIGN KEY CPF REFERENCES PACIENTE(CPF),
-    FOREIGN KEY CRM REFERENCES MEDICO(CRM) 
+    FOREIGN KEY (CPF) REFERENCES PACIENTE(CPF),
+    FOREIGN KEY (CRM) REFERENCES MEDICO(CRM) 
     )"""
     print(criar_tabela(con, sqlProcedimento, "hospital"))
     
-finalizar_conexao(con)
+def finalizar_conexao():
+    con.close()
 
     

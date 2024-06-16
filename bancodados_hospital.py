@@ -1,11 +1,12 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-def criar_conexao(endereco, usuario, senha):
+def criar_conexao(endereco, usuario, senha, banco):
     return mysql.connector.connect(
         host = endereco,
         username = usuario,
-        password = senha
+        password = senha,
+        database = banco
     )
 
 def finalizar_conexao(conexao):
@@ -82,10 +83,19 @@ def atualizar_bancoDeDados(conexao, sql, dados):
     cursor.close()
 
 def excluir_dadosTabela(conexao, sql, dados):
-    cursor = conexao.cursor()
-    cursor.execute(sql, dados)
-    conexao.commit()
-    cursor.close()
+    try:
+        cursor = conexao.cursor()
+        cursor.execute(sql, (dados,))
+        conexao.commit()
+        cursor.close()
+        return "Dados excluido com sucesso!"
+
+    except mysql.connector.Error as error:
+        if error.errno == errorcode.ER_BAD_FIELD_ERROR:
+            return "Erro: dados não encontrado!"
+        else:
+            return f"Erro ao encontrar dados: {error}"
+
 
 def excluir_bancoDados(conexao, nome_banco):
     cursor = conexao.cursor()
