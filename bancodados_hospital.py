@@ -27,9 +27,9 @@ def criar_tabela(conexao, sql, nome_banco):
 
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_BAD_DB_ERROR:
-            return "Erro: Banco de dados inexistente!"
+            return "\nErro: Banco de dados inexistente!"
         else:
-            return f"Error! {error}"
+            return f"\nError! {error}"
 
 def listar_tabelas(conexao, sql):
         cursor = conexao.cursor()
@@ -44,13 +44,13 @@ def insert_naTabela(conexao, sql, dados):
         cursor.execute(sql, dados)
         conexao.commit()
         cursor.close()
-        return "Dados adicionados com sucesso!"
+        return "\nDados inseridos com sucesso!"
     
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_NO_SUCH_TABLE:
-            return "Erro: A tabela não existe."
+            return "\nErro: A tabela não existe."
         else: 
-            return f"Erro ao inserir dados: {error}"
+            return f"\nErro ao inserir dados: {error}"
 
 def listar_umDeTabela(conexao, sql, id):
     try:
@@ -59,17 +59,17 @@ def listar_umDeTabela(conexao, sql, id):
         tabelaUnica = cursor.fetchone()
         cursor.close()
         if tabelaUnica is None:
-            return "Dados não encontrados!"
+            return "\nDados não encontrados!"
         else:
             return tabelaUnica
     
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_NO_SUCH_TABLE:
-            return "Erro: A tabela não existe."
+            return "\nErro: A tabela não existe."
         elif error.errno == errorcode.ER_BAD_FIELD_ERROR:
-           return "Erro: Buscagem não encontrada."
+           return "\nErro: Buscagem não encontrada."
         else:
-            return f"Erro ao buscar dados: {error}"
+            return f"\nErro ao buscar dados: {error}"
 
 
 def listar_bancoDeDados(conexao, sql):
@@ -91,13 +91,13 @@ def excluir_dadosTabela(conexao, sql, dados):
         cursor.execute(sql, (dados,))
         conexao.commit()
         cursor.close()
-        return "Dados excluido com sucesso!"
+        return "\nDados excluido com sucesso!"
 
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_BAD_FIELD_ERROR:
-            return "Erro: dados não encontrado!"
+            return "\nErro: dados não encontrado!"
         else:
-            return f"Erro ao encontrar dados: {error}"
+            return f"\nErro ao encontrar dados: {error}"
 
 
 def excluir_bancoDados(conexao, nome_banco):

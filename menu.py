@@ -1,6 +1,7 @@
 from metodos16 import *
 
 menu = """
+
 1) Adicionar novo paciente.
 2) Adicionar novo médico.
 3) Pesquisar paciente por CPF.
@@ -10,6 +11,7 @@ menu = """
 7) Gerenciar consultas.
 8) Gerenciar procedimentos.
 9) Sair
+
 """
 
 reload()
