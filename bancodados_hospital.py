@@ -32,12 +32,12 @@ def criar_tabela(conexao, sql, nome_banco):
             return f"Error! {error}"
 
 def listar_tabelas(conexao, sql):
-    cursor = conexao.cursor()
-    cursor.execute(sql)
-    tabelas = conexao.fetchall()
-    cursor.close()
-    return tabelas
-
+        cursor = conexao.cursor()
+        cursor.execute(sql)
+        tabelas = conexao.fetchall()
+        cursor.close()
+        return tabelas
+    
 def insert_naTabela(conexao, sql, dados):
     try:
         cursor = conexao.cursor()
@@ -58,7 +58,10 @@ def listar_umDeTabela(conexao, sql, id):
         cursor.execute(sql, (id,))
         tabelaUnica = cursor.fetchone()
         cursor.close()
-        return tabelaUnica
+        if tabelaUnica is None:
+            return "Dados não encontrados!"
+        else:
+            return tabelaUnica
     
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_NO_SUCH_TABLE:

@@ -12,6 +12,7 @@ menu = """
 9) Sair
 """
 
+reload()
 def main():
     while True:
         try:

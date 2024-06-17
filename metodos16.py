@@ -1,6 +1,6 @@
 from bancodados_hospital import *
 
-con = criar_conexao('localhost', 'root', 'admin', 'hospital')
+con = criar_conexao('localhost', 'root', 'root', 'hospital')
 
 def add_paciente():
    
