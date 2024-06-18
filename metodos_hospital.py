@@ -1,7 +1,8 @@
 from bancodados_hospital import *
 
-con = criar_conexao('localhost', 'root', 'root', 'hospital')
+con = criar_conexao('localhost', 'root', 'admin', 'hospital')
 
+#METODO QUE RECEBE OS DADOS DE UM PACIENTE
 def add_paciente():
    
     CPF      = input("Digite o CPF do paciente:")
@@ -18,6 +19,7 @@ def add_paciente():
     
     return insert_naTabela(con, sql, dados)
     
+#METODO QUE RECEBE OS DADOS DE UM MEDICO
 def add_medico(): 
    
     nome          = input("Digite o nome do médico:")
@@ -32,6 +34,7 @@ def add_medico():
     
     return insert_naTabela(con, sql, dados)
     
+#METODO QUE RECEBE CPF PARA BUSCAR UM PACIENTE
 def pesquisar_paciente():
     pesquisaCPF = input ("Digite o CPF do paciente que deseja consultar:")
     
@@ -42,6 +45,7 @@ def pesquisar_paciente():
         sql = "SELECT * FROM PACIENTE WHERE CPF = %s"
         return listar_umDeTabela (con, sql, pesquisaCPF)
 
+##METODO QUE RECEBE CRM PARA BUSCAR UM MEDICO
 def pesquisar_medico():
     pesquisaCRM = input ("Digite o CRM do medico que deseja consultar:")
     
@@ -52,6 +56,7 @@ def pesquisar_medico():
         sql = "SELECT * FROM MEDICO WHERE CRM = %s"
         return listar_umDeTabela (con, sql, pesquisaCRM)
 
+#METODO QUE RECEBE UM CPF E EXCLUI O PACIENTE
 def excluir_paciente():
     excluirCPF = input("Digite o CPF que deseja excluir:")
     
@@ -62,6 +67,7 @@ def excluir_paciente():
         sql = "DELETE FROM PACIENTE WHERE CPF = %s"
         return excluir_dadosTabela (con, sql, excluirCPF)
 
+#METODO QUE RECEBE UM CRM E EXCLUI O MEDICO
 def excluir_medico():
     excluirCRM = input("Digite o CRM que deseja excluir:")
     
@@ -72,6 +78,7 @@ def excluir_medico():
         sql = "DELETE FROM MEDICO WHERE CRM = %s"
         return excluir_dadosTabela (con, sql, excluirCRM)
 
+#METODO QUE RECEBE OS DADOS DE UMA CONSULTA
 def adicionar_consulta():
     pesquisarCPF = input ("Digite o CPF do paciente para agendar a consulta:")
     horario      = input ("Digite o horario da consulta:")
@@ -84,8 +91,9 @@ def adicionar_consulta():
     sql = "INSERT INTO CONSULTA (CPF ,horario, tipo_consulta, CRM) VALUES (%s, %s, %s, %s);"
     dados = (pesquisarCPF, horario, tipoConsulta, pesquisarCRM)
     
-    return insert_naTabela(con, sql, dados)
+    return insert_naTabela2(con, sql, dados)
     
+#METODO QUE RECEBE UM ID PARA BUSCAR UMA CONSULTA
 def visualizar_consulta():
     pesquisarId = input ("Digite o ID da consulta: ")
     
@@ -96,6 +104,7 @@ def visualizar_consulta():
     
     return listar_umDeTabela(con, sql, pesquisarId)
 
+#METODO QUE RECEBE UM ID PARA CANCELAR UMA CONSULTA
 def cancelar_consulta():
     pesquisarId = input ("Digite o ID da consulta que será cancelada: ")
     
@@ -106,6 +115,7 @@ def cancelar_consulta():
     
     return excluir_dadosTabela(con, sql, pesquisarId)
 
+#METODO QUE RECEBE OS DADOS DE UM PROCEDIMENTO MÉDICO
 def adicionar_procedimento():
     pesquisarCRM          = input ("Digite o CRM do medico que vai realizar o procedimento: ")
     pesquisarCPF          = input ("Digite o CPF do paciente: ")
@@ -117,8 +127,9 @@ def adicionar_procedimento():
     sql = "INSERT INTO PROCEDIMENTO (CRM, CPF, PROCEDIMENTO_MEDICO) VALUES (%s, %s, %s)"
     dados = (pesquisarCRM, pesquisarCPF, procedimentoMedico)
     
-    return insert_naTabela(con, sql, dados)
+    return insert_naTabela2(con, sql, dados)
 
+#METODO QUE RECEBE UM ID PARA BUSCAR UM PROCEDIMENTO
 def visualizar_procedimento():
     pesquisarId = input ("Digite o ID do procedimento: ")
     
@@ -129,6 +140,7 @@ def visualizar_procedimento():
     
     return listar_umDeTabela(con, sql, pesquisarId)
 
+#METODO QUE CANCELA UM ID PARA CANCELAR UM PROCEDIMENTO
 def cancelar_procedimento():
     pesquisarId = input ("Digite o ID do procedimento que será cancelado: ")
     
@@ -139,6 +151,7 @@ def cancelar_procedimento():
     
     return excluir_dadosTabela(con, sql, pesquisarId)
 
+#METODO PARA RECARGAR E CRIAR AS TABELAS PACIENTE, MÉDICO, CONSULTA E PROCEDIMENTO CASO NÃO EXISTA NO MYSQL DO COMPUTADOR
 def reload():
     sqlPaciente = """
     CREATE TABLE IF NOT EXISTS PACIENTE (

@@ -1,4 +1,4 @@
-from metodos16 import *
+from metodos_hospital import *
 
 menu = """
 
@@ -15,6 +15,7 @@ menu = """
 """
 
 reload()
+#METODO DE MENU PRINCIPAL
 def main():
     while True:
         try:
@@ -54,6 +55,7 @@ def main():
         except ValueError:
             print("ERROR! Opção inválida!")
 
+#METODO QUE CHAMA O MENU DE GERENCIAMENTO DE CONSULTA
 def gerenciar_consultas():
     sub_menu = """
     1) Adicionar consultas.
@@ -79,6 +81,7 @@ def gerenciar_consultas():
         except ValueError:
             print("ERROR! Opção inválida!")
 
+#METODO QUE CHAMA O MENU DE GERENCIAMENTO DE PROCEDIMENTOS MÉDICOS
 def gerenciar_procedimentos():
     sub_menu = """
     1) Adicionar procedimentos.
@@ -104,5 +107,6 @@ def gerenciar_procedimentos():
         except ValueError:
             print("ERROR! Opção inválida!")
 
+#USADO PARA CHAMAR O METODO MAIN 
 if __name__ == "__main__":
     main()
