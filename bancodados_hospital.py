@@ -26,13 +26,13 @@ def criar_tabela(conexao, sql, nome_banco):
         cursor.execute(f"USE {nome_banco}")
         cursor.execute(sql)
         cursor.close()
-        return "Banco de dados criado com sucesso!"
+        return " → Banco de dados criado com sucesso!"
 
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_BAD_DB_ERROR:
-            return "\nErro: Banco de dados inexistente!"
+            return "\n → Erro: Banco de dados inexistente!"
         else:
-            return f"\nError! {error}"
+            return f"\n → Error! {error}"
 
 #METODO PARA LISTAR VARIAS TABELAS
 def listar_tabelas(conexao, sql):
@@ -49,13 +49,13 @@ def insert_naTabela(conexao, sql, dados):
         cursor.execute(sql, dados)
         conexao.commit()
         cursor.close()
-        return f"\nDados inseridos com sucesso!"
+        return f"\n → Dados inseridos com sucesso!"
     
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_NO_SUCH_TABLE:
-            return "\nErro: A tabela não existe."
+            return "\n → Erro: A tabela não existe."
         else: 
-            return f"\nErro ao inserir dados: {error}"
+            return f"\n → Erro ao inserir dados: {error}"
 
 def insert_naTabela2(conexao, sql, dados):
     try:
@@ -64,13 +64,13 @@ def insert_naTabela2(conexao, sql, dados):
         id = cursor.lastrowid
         conexao.commit()
         cursor.close()
-        return f"\nDados inseridos com sucesso! ID: {id}"
+        return f"\n → Dados inseridos com sucesso! ID: {id}"
     
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_NO_SUCH_TABLE:
-            return "\nErro: A tabela não existe."
+            return "\n → Erro: A tabela não existe."
         else: 
-            return f"\nErro ao inserir dados: {error}"
+            return f"\n → Erro ao inserir dados: {error}"
 
 def listar_umDeTabela(conexao, sql, id):
     try:
@@ -79,17 +79,17 @@ def listar_umDeTabela(conexao, sql, id):
         tabelaUnica = cursor.fetchone()
         cursor.close()
         if tabelaUnica is None:
-            return "\nDados não encontrados!"
+            return "\n → Dados não encontrados!"
         else:
             return tabelaUnica
     
     except mysql.connector.Error as error:
         if error.errno == errorcode.ER_NO_SUCH_TABLE:
-            return "\nErro: A tabela não existe."
+            return "\n → Erro: A tabela não existe."
         elif error.errno == errorcode.ER_BAD_FIELD_ERROR:
-           return "\nErro: Buscagem não encontrada."
+           return "\n → Erro: Buscagem não encontrada."
         else:
-            return f"\nErro ao buscar dados: {error}"
+            return f"\n → Erro ao buscar dados: {error}"
 
 
 def listar_bancoDeDados(conexao, sql):
@@ -114,12 +114,12 @@ def excluir_dadosTabela(conexao, sql, dados):
         cursor.close()
 
         if linhasDeletada > 0:
-            return "\nDados excluido com sucesso!"
+            return "\n → Dados excluido com sucesso!"
         else:
-            return "\nDados não encontrado!"
+            return "\n → Dados não encontrado!"
 
     except mysql.connector.Error as error:
-        f"\nErro ao encontrar dados: {error}"
+        f"\n → Erro ao encontrar dados: {error}"
 
 
 def excluir_bancoDados(conexao, nome_banco):

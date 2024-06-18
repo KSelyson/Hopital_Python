@@ -1,6 +1,6 @@
 from bancodados_hospital import *
 
-con = criar_conexao('localhost', 'root', 'admin', 'hospital')
+con = criar_conexao('localhost', 'root', 'root', 'hospital')
 
 #METODO QUE RECEBE OS DADOS DE UM PACIENTE
 def add_paciente():
@@ -12,7 +12,7 @@ def add_paciente():
     telefone = input("Digite o telefone do paciente:")
     
     if not CPF or not nome or not idade or not endereco or not telefone:
-        return "\nPor favor, preencha todos os campos"
+        return "\n → Por favor, preencha todos os campos"
     
     sql = "INSERT INTO PACIENTE(CPF, nome, idade, endereco, telefone) VALUES (%s, %s, %s, %s, %s )" 
     dados = (CPF, nome, idade, endereco, telefone)
@@ -27,7 +27,7 @@ def add_medico():
     CRM           = input("Digite o CRM do médico:")
     telefone      = input("Digite o telefone do médico:")    
     if not nome or not especialidade or not CRM or not telefone:
-        return "\nPor favor, preencha todos os campos"
+        return "\n → Por favor, preencha todos os campos"
     
     sql = "INSERT INTO MEDICO(CRM, nome, especialidade, telefone) VALUES (%s, %s, %s, %s )"
     dados = (CRM, nome, especialidade, telefone)
@@ -39,7 +39,7 @@ def pesquisar_paciente():
     pesquisaCPF = input ("Digite o CPF do paciente que deseja consultar:")
     
     if not pesquisaCPF:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     else:
         sql = "SELECT * FROM PACIENTE WHERE CPF = %s"
@@ -50,7 +50,7 @@ def pesquisar_medico():
     pesquisaCRM = input ("Digite o CRM do medico que deseja consultar:")
     
     if not pesquisaCRM:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     else: 
         sql = "SELECT * FROM MEDICO WHERE CRM = %s"
@@ -61,7 +61,7 @@ def excluir_paciente():
     excluirCPF = input("Digite o CPF que deseja excluir:")
     
     if not excluirCPF:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     else: 
         sql = "DELETE FROM PACIENTE WHERE CPF = %s"
@@ -72,7 +72,7 @@ def excluir_medico():
     excluirCRM = input("Digite o CRM que deseja excluir:")
     
     if not excluirCRM:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     else:
         sql = "DELETE FROM MEDICO WHERE CRM = %s"
@@ -86,7 +86,7 @@ def adicionar_consulta():
     pesquisarCRM = input ("Digite o CRM do medico que deseja ser atendido: ")
     
     if not pesquisarCPF or not horario or not tipoConsulta or not pesquisarCRM:
-        return "\nPreencha todos os campos corretamente!"
+        return "\n → Preencha todos os campos corretamente!"
     
     sql = "INSERT INTO CONSULTA (CPF ,horario, tipo_consulta, CRM) VALUES (%s, %s, %s, %s);"
     dados = (pesquisarCPF, horario, tipoConsulta, pesquisarCRM)
@@ -98,7 +98,7 @@ def visualizar_consulta():
     pesquisarId = input ("Digite o ID da consulta: ")
     
     if not pesquisarId:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     sql = "SELECT * FROM CONSULTA WHERE ID = %s"
     
@@ -109,7 +109,7 @@ def cancelar_consulta():
     pesquisarId = input ("Digite o ID da consulta que será cancelada: ")
     
     if not pesquisarId:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     sql = "DELETE FROM CONSULTA WHERE ID = %s"
     
@@ -122,7 +122,7 @@ def adicionar_procedimento():
     procedimentoMedico    = input ("Descreva o procedimento realizado: ")
     
     if not pesquisarCRM or not pesquisarCPF or not procedimentoMedico:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     sql = "INSERT INTO PROCEDIMENTO (CRM, CPF, PROCEDIMENTO_MEDICO) VALUES (%s, %s, %s)"
     dados = (pesquisarCRM, pesquisarCPF, procedimentoMedico)
@@ -134,7 +134,7 @@ def visualizar_procedimento():
     pesquisarId = input ("Digite o ID do procedimento: ")
     
     if not pesquisarId:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     sql = "SELECT * FROM PROCEDIMENTO WHERE ID = %s"
     
@@ -145,7 +145,7 @@ def cancelar_procedimento():
     pesquisarId = input ("Digite o ID do procedimento que será cancelado: ")
     
     if not pesquisarId:
-        return "\nPreencha o campo corretamente"
+        return "\n → Preencha o campo corretamente"
     
     sql = "DELETE FROM PROCEDIMENTO WHERE ID = %s"
     
